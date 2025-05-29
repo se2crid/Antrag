@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - View
 struct SYSettingsView: View {
 	private let _donationsUrl = "https://github.com/sponsors/khcrysalis"
-	private let _githubUrl = "https://github.com/khcrysalis/Protokolle"
+	private let _githubUrl = "https://github.com/khcrysalis/Antrag"
 	
 	// MARK: Body
 	

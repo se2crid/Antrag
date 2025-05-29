@@ -1,6 +1,6 @@
-NAME := Protokolle
+NAME := Antrag
 PLATFORM := iphoneos
-SCHEMES := Protokolle
+SCHEMES := Antrag
 TMP := $(TMPDIR)/$(NAME)
 STAGE := $(TMP)/stage
 APP := $(TMP)/Build/Products/Release-$(PLATFORM)
@@ -16,7 +16,7 @@ clean:
 
 $(SCHEMES):
 	xcodebuild \
-	    -project Protokolle.xcodeproj \
+	    -project Antrag.xcodeproj \
 	    -scheme "$@" \
 	    -configuration Release \
 	    -arch arm64 \
