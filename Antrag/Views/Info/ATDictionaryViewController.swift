@@ -143,7 +143,6 @@ class ATDictionaryViewController: UICollectionViewController {
 			}
 		}
 	}
-
 	
 	private func _formatted(_ value: Any) -> String {
 		switch value {

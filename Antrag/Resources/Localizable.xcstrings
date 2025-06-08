@@ -34,17 +34,6 @@
         }
       }
     },
-    "App Clip" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Clip"
-          }
-        }
-      }
-    },
     "Application Build" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -85,6 +74,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bundle Path"
+          }
+        }
+      }
+    },
+    "Can be upgraded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can be upgraded"
           }
         }
       }
@@ -155,17 +155,6 @@
         }
       }
     },
-    "From App Store" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "From App Store"
-          }
-        }
-      }
-    },
     "GitHub Repository" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -228,6 +217,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import Pairing File"
+          }
+        }
+      }
+    },
+    "Is an App Clip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is an App Clip"
           }
         }
       }

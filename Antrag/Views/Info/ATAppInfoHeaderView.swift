@@ -15,14 +15,14 @@ class ATAppInfoHeaderView: UIView {
 	
 	let nameLabel: UILabel = {
 		let label = UILabel()
-		label.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize, weight: .semibold)
+		label.font = .systemFont(ofSize: 20, weight: .semibold)
 		label.numberOfLines = 0
 		return label
 	}()
 	
 	let descriptionLabel: UILabel = {
 		let label = UILabel()
-		label.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize,  weight: .regular)
+		label.font = .systemFont(ofSize: 13,  weight: .regular)
 		label.textColor = .secondaryLabel
 		label.numberOfLines = 0
 		return label
@@ -42,7 +42,7 @@ class ATAppInfoHeaderView: UIView {
 	let openButton: UIButton = {
 		let button = UIButton(type: .system)
 		button.setTitle(.localized("Open"), for: .normal)
-		button.titleLabel?.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize, weight: .bold)
+		button.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
 		button.backgroundColor = UIColor.systemBlue
 		button.tintColor = .white
 		button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)

@@ -10,6 +10,7 @@ import class SwiftUI.UIHostingController
 import UICustomSwipeActions
 import IDeviceSwift
 
+// MARK: Class extension: Enum
 extension ATAppsViewController {
 	enum AppType: String, CaseIterable, Identifiable {
 		case system = "System"

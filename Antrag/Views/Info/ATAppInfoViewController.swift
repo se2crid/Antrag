@@ -124,10 +124,10 @@ class ATAppInfoViewController: UITableViewController {
 			signed.append(.init(title: .localized("Signed by"), value: signedby))
 		}
 		if let isAppClip = app.IsAppClip {
-			extra.append(.init(title: .localized("App Clip"), value: isAppClip.description))
+			extra.append(.init(title: .localized("Is an App Clip"), value: isAppClip.description))
 		}
 		if let isFromAppStore = app.IsUpgradeable {
-			extra.append(.init(title: .localized("From App Store"), value: isFromAppStore.description))
+			extra.append(.init(title: .localized("Can be upgraded"), value: isFromAppStore.description))
 		}
 		
 		// dicts
