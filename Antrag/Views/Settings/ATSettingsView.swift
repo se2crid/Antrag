@@ -38,6 +38,14 @@ extension ATSettingsView {
 	@ViewBuilder
 	private func _feedback() -> some View {
 		Section {
+			NavigationLink(destination: SYAboutView()) {
+				Label {
+					Text(verbatim: .localized("About %@", arguments: Bundle.main.name))
+				} icon: {
+					Image(uiImage: UIImage(named: Bundle.main.iconFileName ?? "")!)
+						.appIconStyle(size: 23)
+				}
+			}
 			Button(.localized("GitHub Repository"), systemImage: "safari") {
 				UIApplication.open(_githubUrl)
 			}
