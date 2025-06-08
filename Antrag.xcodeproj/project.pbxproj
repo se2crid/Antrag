@@ -21,7 +21,7 @@
 		3325DD122DE558880073F6C5 /* Exceptions for "Antrag" folder in "Antrag" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 339216D12DE42D7B00302927 /* Antrag */;
 		};
@@ -297,7 +297,7 @@
 				DEVELOPMENT_TEAM = 5CF4A573CD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Antrag/Info.plist;
+				INFOPLIST_FILE = Antrag/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Antrag;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -341,7 +341,7 @@
 				DEVELOPMENT_TEAM = 5CF4A573CD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Antrag/Info.plist;
+				INFOPLIST_FILE = Antrag/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Antrag;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

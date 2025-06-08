@@ -1,7 +1,7 @@
 # Antrag
 
-[![GitHub Release](https://img.shields.io/github/v/release/khcrysalis/protokolle?include_prereleases)](https://github.com/khcrysalis/protokolle/releases)
-[![GitHub License](https://img.shields.io/github/license/khcrysalis/protokolle?color=%23C96FAD)](https://github.com/khcrysalis/protokolle/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/khcrysalis/antrag?include_prereleases)](https://github.com/khcrysalis/protokolle/releases)
+[![GitHub License](https://img.shields.io/github/license/khcrysalis/antrag?color=%23C96FAD)](https://github.com/khcrysalis/protokolle/blob/main/LICENSE)
 
 An app to list iOS/iPadOS app's, for stock devices. This app uses [idevice](https://github.com/jkcoxson/idevice) and lockdownd pairing to retrieve installed apps.
 
@@ -33,7 +33,7 @@ Due to how it works right now we need both a VPN and a lockdownd pairing file, t
 
 1. Clone repository
     ```sh
-    git clone https://github.com/khcrysalis/Protokolle
+    git clone https://github.com/khcrysalis/Antrag
     ```
 
 2. Compile
@@ -52,7 +52,7 @@ Using the makefile will automatically create an adhoc ipa inside the packages di
 ## Acknowledgements
 
 - [Samara](https://github.com/khcrysalis) - The maker
-- [idevice](https://github.com/jkcoxson/idevice) - Backend functionality, uses `os_trace_relay` to retrieve messages.
+- [idevice](https://github.com/jkcoxson/idevice) - Backend functionality, uses `installation_proxy` to retrieve messages.
 
 ## License 
 
