@@ -1,0 +1,15 @@
+{
+  "originHash" : "e842fb062d753556c884fab94791e116eea274061104fd07d5981e0486d43123",
+  "pins" : [
+    {
+      "identity" : "uicustomswipeactions-patch",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/khcrysalis/UICustomSwipeActions-patch",
+      "state" : {
+        "branch" : "fix-placement",
+        "revision" : "bc150b1f7ab18f01ff21b733e65045fec86e4f95"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - View
-struct TunnelView: View {
+struct ATTunnelView: View {
 	@State private var _isImportingPairingPresenting = false
 	
 	@State var doesHavePairingFile = false
@@ -21,17 +21,17 @@ struct TunnelView: View {
 				TunnelHeaderView()
 			} footer: {
 				if doesHavePairingFile {
-					Text("Seems like you've gotten your hands on your pairing file!")
+					Text(.localized("Seems like you've gotten your hands on your pairing file!"))
 				} else {
-					Text("No pairing file found, please import it.")
+					Text(.localized("No pairing file found, please import it."))
 				}
 			}
 			
 			Section {
-				Button("Import Pairing File", systemImage: "square.and.arrow.down") {
+				Button(.localized("Import Pairing File"), systemImage: "square.and.arrow.down") {
 					_isImportingPairingPresenting = true
 				}
-				Button("Restart Heartbeat", systemImage: "arrow.counterclockwise") {
+				Button(.localized("Restart Heartbeat"), systemImage: "arrow.counterclockwise") {
 					HeartbeatManager.shared.start(true)
 					
 					DispatchQueue.global(qos: .userInitiated).async {
@@ -39,24 +39,15 @@ struct TunnelView: View {
 							DispatchQueue.main.async {
 								UIAlertController.showAlertWithOk(
 									title: "Socket",
-									message: "Unable to connect to TCP. Make sure you have loopback VPN enabled and you are on WiFi or Airplane mode."
+									message: .localized("Unable to connect to TCP. Make sure you have loopback VPN enabled and you are on WiFi or Airplane mode.")
 								)
 							}
 						}
 					}
 				}
 			}
-			
-			Section("Help") {
-				Button("Pairing File Guide", systemImage: "questionmark.circle") {
-					UIApplication.open("https://github.com/StephenDev0/StikDebug-Guide/blob/main/pairing_file.md")
-				}
-				Button("Download StosVPN", systemImage: "arrow.down.app") {
-					UIApplication.open("https://apps.apple.com/us/app/stosvpn/id6744003051")
-				}
-			}
 		}
-		.navigationTitle("Tunnel & Pairing")
+		.navigationTitle(.localized("Tunnel & Pairing"))
 		.sheet(isPresented: $_isImportingPairingPresenting) {
 			FileImporterRepresentableView(
 				allowedContentTypes:  [.xmlPropertyList, .plist, .mobiledevicepairing],
@@ -78,9 +69,9 @@ struct TunnelView: View {
 	private func _tunnelInfo() -> some View {
 		HStack {
 			VStack(alignment: .leading, spacing: 6) {
-				Text("Heartbeat")
+				Text(.localized("Heartbeat"))
 					.font(.headline)
-				Text("The heartbeat is activated in the background, it will restart when the app is re-opened or prompted. If the status below is pulsing, that means its healthy.")
+				Text(.localized("The heartbeat is activated in the background, it will restart when the app is re-opened or prompted. If the status below is pulsing, that means its healthy."))
 					.font(.subheadline)
 					.foregroundStyle(.secondary)
 			}

@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - View
-struct SYSettingsView: View {
+struct ATSettingsView: View {
 	private let _donationsUrl = "https://github.com/sponsors/khcrysalis"
 	private let _githubUrl = "https://github.com/khcrysalis/Antrag"
 	
@@ -17,31 +17,31 @@ struct SYSettingsView: View {
 	var body: some View {
 		NavigationStack {
 			Form {
-				Section("Pairing") {
-					NavigationLink("Tunnel & Pairing") {
-						TunnelView()
+				Section(.localized("Pairing")) {
+					NavigationLink(.localized("Tunnel & Pairing")) {
+						ATTunnelView()
 					}
 				}
 				
 				_feedback()
 				_help()
 			}
-			.navigationTitle("Settings")
+			.navigationTitle(.localized("Settings"))
 			.navigationBarTitleDisplayMode(.large)
 		}
 	}
 }
 
 // MARK: - View extension
-extension SYSettingsView {
+extension ATSettingsView {
 
 	@ViewBuilder
 	private func _feedback() -> some View {
 		Section {
-			Button("GitHub Repository", systemImage: "safari") {
+			Button(.localized("GitHub Repository"), systemImage: "safari") {
 				UIApplication.open(_githubUrl)
 			}
-			Button("Support My Work", systemImage: "heart") {
+			Button(.localized("Support My Work"), systemImage: "heart") {
 				UIApplication.open(_donationsUrl)
 			}
 		}
@@ -49,11 +49,11 @@ extension SYSettingsView {
 	
 	@ViewBuilder
 	private func _help() -> some View {
-		Section("Help") {
-			Button("Pairing File Guide", systemImage: "questionmark.circle") {
+		Section(.localized("Help")) {
+			Button(.localized("Pairing File Guide"), systemImage: "questionmark.circle") {
 				UIApplication.open("https://github.com/StephenDev0/StikDebug-Guide/blob/main/pairing_file.md")
 			}
-			Button("Download StosVPN", systemImage: "arrow.down.app") {
+			Button(.localized("Download StosVPN"), systemImage: "arrow.down.app") {
 				UIApplication.open("https://apps.apple.com/us/app/stosvpn/id6744003051")
 			}
 		}
