@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		334A2D032DE82207009675F0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 334A2D022DE82207009675F0 /* MobileCoreServices.framework */; };
 		335349FC2DF56AD200AEC291 /* UICustomSwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = 335349FB2DF56AD200AEC291 /* UICustomSwipeActions */; };
+		33534A012DF5741C00AEC291 /* IDeviceSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 33534A002DF5741C00AEC291 /* IDeviceSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 			files = (
 				335349FC2DF56AD200AEC291 /* UICustomSwipeActions in Frameworks */,
 				334A2D032DE82207009675F0 /* MobileCoreServices.framework in Frameworks */,
+				33534A012DF5741C00AEC291 /* IDeviceSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +98,7 @@
 			name = Antrag;
 			packageProductDependencies = (
 				335349FB2DF56AD200AEC291 /* UICustomSwipeActions */,
+				33534A002DF5741C00AEC291 /* IDeviceSwift */,
 			);
 			productName = caipirinha;
 			productReference = 339216D22DE42D7B00302927 /* Antrag.app */;
@@ -127,6 +130,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */,
+				335349FF2DF5741B00AEC291 /* XCLocalSwiftPackageReference "IDeviceKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 339216D32DE42D7B00302927 /* Products */;
@@ -391,6 +395,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		335349FF2DF5741B00AEC291 /* XCLocalSwiftPackageReference "IDeviceKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = IDeviceKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -407,6 +418,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */;
 			productName = UICustomSwipeActions;
+		};
+		33534A002DF5741C00AEC291 /* IDeviceSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IDeviceSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import IDeviceSwift
 
 // MARK: - Class extension: ContentStruct
 extension ATAppInfoViewController {
@@ -61,7 +62,7 @@ class ATAppInfoViewController: UITableViewController {
 	func setupNavigation() {
 		Task { [weak self] in
 			guard let self else { return }
-			if let image = try? await ListApps.getAppIconCached(for: app.CFBundleIdentifier ?? "") {
+			if let image = try? await InstallationAppProxy.getAppIconCached(for: app.CFBundleIdentifier ?? "") {
 				DispatchQueue.main.async {
 					self.appIcon = image
 					self.fadingImageView.image = image

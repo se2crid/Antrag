@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import IDeviceSwift
 
 // MARK: - Class extension: delegate
-extension ATAppsViewController: ListAppsDelegate {
-	func updateApplications(with apps: [AppInfo]) {
+extension ATAppsViewController: InstallationProxyAppsDelegate {
+	func updateApplications(with apps: [IDeviceSwift.AppInfo]) {
 		self.apps = apps
 		filterAndReload()
 	}

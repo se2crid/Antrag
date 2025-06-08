@@ -7,6 +7,7 @@
 
 import UIKit
 import UICustomSwipeActions
+import IDeviceSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

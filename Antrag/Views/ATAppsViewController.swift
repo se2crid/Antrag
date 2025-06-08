@@ -8,6 +8,7 @@
 import UIKit
 import class SwiftUI.UIHostingController
 import UICustomSwipeActions
+import IDeviceSwift
 
 extension ATAppsViewController {
 	enum AppType: String, CaseIterable, Identifiable {
@@ -30,8 +31,8 @@ class ATAppsViewController: UITableViewController {
 	var filteredApps: [AppInfo] = []
 	var appType: AppType = .user
 	
-	var appsManager: ListApps {
-		let listApps = ListApps()
+	var appsManager: InstallationAppProxy {
+		let listApps = InstallationAppProxy()
 		listApps.delegate = self
 		return listApps
 	}
@@ -174,7 +175,7 @@ extension ATAppsViewController {
 			let deleteAction = UIContextualAction(style: .destructive, title: .localized("Delete")) { _,_,_ in
 				Task {
 					do {
-						try await ListApps.deleteApp(for: id)
+						try await InstallationAppProxy.deleteApp(for: id)
 						await MainActor.run {
 							self.filteredApps.remove(at: indexPath.row)
 							

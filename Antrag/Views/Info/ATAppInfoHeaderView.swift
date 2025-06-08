@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import IDeviceSwift
 
 // MARK: - Class
 class ATAppInfoHeaderView: UIView {
@@ -120,7 +121,7 @@ class ATAppInfoHeaderView: UIView {
 		
 		Task { [weak self] in
 			guard let self else { return }
-			if let image = try? await ListApps.getAppIconCached(for: identifier) {
+			if let image = try? await InstallationAppProxy.getAppIconCached(for: identifier) {
 				DispatchQueue.main.async {
 					self.iconImageView.image = image
 				}
