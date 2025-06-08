@@ -87,10 +87,12 @@
 				339216CE2DE42D7B00302927 /* Sources */,
 				339216CF2DE42D7B00302927 /* Frameworks */,
 				339216D02DE42D7B00302927 /* Resources */,
+				339270922DF58C5500302927 /* Copy Acknowledgements */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				33534E002DF58D4400AEC291 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				339216D42DE42D7B00302927 /* Antrag */,
@@ -131,6 +133,7 @@
 			packageReferences = (
 				335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */,
 				335349FF2DF5741B00AEC291 /* XCLocalSwiftPackageReference "IDeviceKit" */,
+				33534DAF2DF58C4700AEC291 /* XCRemoteSwiftPackageReference "LicensePlist" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 339216D32DE42D7B00302927 /* Products */;
@@ -152,6 +155,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		339270922DF58C5500302927 /* Copy Acknowledgements */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Acknowledgements";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Will copy acknowledgements\"\n\nACKNOWLEDGEMENTS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/com.mono0926.LicensePlist.Output\nDESTINATION_PATH=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Settings.bundle/\n\ncp -r \"${ACKNOWLEDGEMENTS_DIR}\"/thewonderofyou.antrag2 \"${DESTINATION_PATH}\"\ncp -r \"${ACKNOWLEDGEMENTS_DIR}\"/thewonderofyou.antrag2.plist \"${DESTINATION_PATH}\"\nrm -rf \"${ACKNOWLEDGEMENTS_DIR}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		339216CE2DE42D7B00302927 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -161,6 +181,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		33534E002DF58D4400AEC291 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 33534DFF2DF58D4400AEC291 /* LicensePlistBuildTool */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		339216DE2DE42D7D00302927 /* Debug */ = {
@@ -290,12 +317,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Antrag/Supporting Files/Antrag.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 95J8WZ4TN8;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Antrag/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Antrag;
@@ -332,12 +360,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Antrag/Supporting Files/Antrag.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				DEVELOPMENT_TEAM = 95J8WZ4TN8;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Antrag/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Antrag;
@@ -407,6 +436,14 @@
 				kind = branch;
 			};
 		};
+		33534DAF2DF58C4700AEC291 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mono0926/LicensePlist";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.27.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -418,6 +455,11 @@
 		33534A002DF5741C00AEC291 /* IDeviceSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = IDeviceSwift;
+		};
+		33534DFF2DF58D4400AEC291 /* LicensePlistBuildTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33534DAF2DF58C4700AEC291 /* XCRemoteSwiftPackageReference "LicensePlist" */;
+			productName = "plugin:LicensePlistBuildTool";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
