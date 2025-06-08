@@ -28,7 +28,8 @@ extension ATAppsViewController {
 // MARK: - Class
 class ATAppsViewController: UITableViewController {
 	var apps: [AppInfo] = []
-	var filteredApps: [AppInfo] = []
+	var allSortedApps: [AppInfo] = [] // backup
+	var sortedApps: [AppInfo] = [] // main
 	var appType: AppType = .user
 	
 	var appsManager: InstallationAppProxy {
@@ -43,6 +44,7 @@ class ATAppsViewController: UITableViewController {
 		super.viewDidLoad()
 		setupTableView()
 		setupNavigation()
+		setupSearchController()
 		setupListeners()
 	}
 	
@@ -59,6 +61,14 @@ class ATAppsViewController: UITableViewController {
 		
 		let settingsButton = UIBarButtonItem(systemImageName: "gear.circle.fill", target: self, action: #selector(settingsAction))
 		navigationItem.rightBarButtonItem = settingsButton
+	}
+	
+	func setupSearchController() {
+		let searchController = UISearchController(searchResultsController: nil)
+		searchController.searchResultsUpdater = self
+		searchController.obscuresBackgroundDuringPresentation = false
+		navigationItem.searchController = searchController
+		definesPresentationContext = true
 	}
 	
 	func setupTableView() {
@@ -131,7 +141,7 @@ extension ATAppsViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		filteredApps.count
+		sortedApps.count
 	}
 	
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -146,13 +156,13 @@ extension ATAppsViewController {
 			return UITableViewCell()
 		}
 		
-		let app = filteredApps[indexPath.row]
+		let app = sortedApps[indexPath.row]
 		cell.configure(with: app)
 		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let app = filteredApps[indexPath.row]
+		let app = sortedApps[indexPath.row]
 		
 		tableView.deselectRow(at: indexPath, animated: true)
 		
@@ -168,7 +178,7 @@ extension ATAppsViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UICustomSwipeActionsConfiguration? {
-		let app = filteredApps[indexPath.row]
+		let app = sortedApps[indexPath.row]
 		var actions: [UIContextualAction] = []
 		
 		if let id = app.CFBundleIdentifier {
@@ -177,7 +187,7 @@ extension ATAppsViewController {
 					do {
 						try await InstallationAppProxy.deleteApp(for: id)
 						await MainActor.run {
-							self.filteredApps.remove(at: indexPath.row)
+							self.sortedApps.remove(at: indexPath.row)
 							
 							if let fullIndex = self.apps.firstIndex(where: { $0.CFBundleIdentifier == id }) {
 								self.apps.remove(at: fullIndex)
@@ -215,4 +225,42 @@ extension ATAppsViewController {
 		
 		return configuration
 	}
+	
+	@available(iOS 17.0, *)
+	override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+		var config: UIContentUnavailableConfiguration?
+		if sortedApps.count == 0 {
+			var empty = UIContentUnavailableConfiguration.empty()
+			empty.background.backgroundColor = .systemBackground
+			empty.image = UIImage(systemName: "nosign.app")
+			empty.text = .localized("No Apps Found")
+			empty.secondaryText = .localized("Please make sure you are connected to the VPN and have a pairing file.")
+			empty.background = .listSidebarCell()
+			
+			config = empty
+			contentUnavailableConfiguration = config
+			return
+		} else {
+			contentUnavailableConfiguration = nil
+			return
+		}
+	}
 }
+
+extension ATAppsViewController: UISearchResultsUpdating {
+	func updateSearchResults(for searchController: UISearchController) {
+		guard let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty else {
+			sortedApps = allSortedApps
+			tableView.reloadData()
+			return
+		}
+		
+		sortedApps = allSortedApps.filter { app in
+			app.CFBundleDisplayName?.lowercased().contains(searchText) == true ||
+			app.CFBundleExecutable?.lowercased().contains(searchText) == true ||
+			app.CFBundleIdentifier?.lowercased().contains(searchText) == true
+		}
+		tableView.reloadData()
+	}
+}
+

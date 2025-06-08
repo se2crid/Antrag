@@ -16,7 +16,7 @@ extension ATAppsViewController: InstallationProxyAppsDelegate {
 	}
 	
 	func filterAndReload() {
-		filteredApps = apps
+		sortedApps = apps
 			.filter {
 				switch appType {
 				case .system: return $0.ApplicationType == "System"
@@ -29,6 +29,12 @@ extension ATAppsViewController: InstallationProxyAppsDelegate {
 				let result = name1.localizedCaseInsensitiveCompare(name2)
 				return result == .orderedAscending
 			}
+		
+		allSortedApps = sortedApps
+		
+		if #available(iOS 17.0, *) {
+			setNeedsUpdateContentUnavailableConfiguration()
+		}
 		
 		tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
 	}

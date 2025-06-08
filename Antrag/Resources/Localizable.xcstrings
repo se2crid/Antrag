@@ -254,6 +254,17 @@
         }
       }
     },
+    "No Apps Found" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Apps Found"
+          }
+        }
+      }
+    },
     "No pairing file found, please import it." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -294,6 +305,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pairing File Guide"
+          }
+        }
+      }
+    },
+    "Please make sure you are connected to the VPN and have a pairing file." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please make sure you are connected to the VPN and have a pairing file."
           }
         }
       }
