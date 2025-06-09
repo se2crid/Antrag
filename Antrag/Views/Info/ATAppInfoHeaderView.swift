@@ -39,16 +39,7 @@ class ATAppInfoHeaderView: UIView {
 		return imageView
 	}()
 	
-	let openButton: UIButton = {
-		let button = UIButton(type: .system)
-		button.setTitle(.localized("Open"), for: .normal)
-		button.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
-		button.backgroundColor = UIColor.systemBlue
-		button.tintColor = .white
-		button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		return button
-	}()
+	let openButton: UIButton = ATOpenButton(type: .system)
 	
 	// MARK: Overrides
 	
@@ -64,9 +55,6 @@ class ATAppInfoHeaderView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		iconImageView.layer.cornerRadius = iconImageView.frame.height * 0.2337
-		
-		openButton.layer.cornerRadius = openButton.frame.height / 2
-		openButton.layer.masksToBounds = true
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

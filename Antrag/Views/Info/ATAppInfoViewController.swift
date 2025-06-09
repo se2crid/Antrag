@@ -39,6 +39,13 @@ class ATAppInfoViewController: UITableViewController {
 		return imageView
 	}()
 	
+	let openButton: UIButton = {
+		let button = ATOpenButton(type: .system)
+		button.alpha = 0
+		button.isHidden = true
+		return button
+	}()
+	
 	var app: AppInfo
 	
 	init(app: AppInfo) {
@@ -73,6 +80,11 @@ class ATAppInfoViewController: UITableViewController {
 		
 		let dismissButton = UIBarButtonItem(systemImageName: "chevron.backward.circle.fill", target: self, action: #selector(dismissAction))
 		navigationItem.leftBarButtonItem = dismissButton
+		
+		openButton.addTarget(self, action: #selector(openButtonTapped), for: .touchUpInside)
+		
+		let barButtonItem = UIBarButtonItem(customView: openButton)
+		navigationItem.rightBarButtonItem = barButtonItem
 	}
 	
 	func setupTableView() {
@@ -149,7 +161,6 @@ class ATAppInfoViewController: UITableViewController {
 			paths.append(.init(title: .localized("Container Path"), value: containerPath))
 		}
 		
-		
 		[general, platform, signed, extra, dicts, paths].forEach {
 			if !$0.isEmpty { _infoSections.append($0) }
 		}
@@ -159,6 +170,10 @@ class ATAppInfoViewController: UITableViewController {
 	
 	@objc private func dismissAction() {
 		dismiss(animated: true)
+	}
+	
+	@objc private func openButtonTapped() {
+		UIApplication.openApp(with: app.CFBundleIdentifier ?? "")
 	}
 }
 
@@ -183,12 +198,24 @@ extension ATAppInfoViewController {
 				self.fadingImageView.alpha = 0
 				self.fadingImageView.isHidden = true
 			}
+			
+			if !openButton.isHidden {
+				self.openButton.alpha = 0
+				self.openButton.isHidden = true
+			}
 		} else {
 			if fadingImageView.isHidden {
 				fadingImageView.alpha = 0
 				fadingImageView.isHidden = false
 			}
+			
+			if openButton.isHidden {
+				openButton.alpha = 0
+				openButton.isHidden = false
+			}
+			
 			self.fadingImageView.alpha = targetAlpha
+			self.openButton.alpha = targetAlpha
 		}
 	}
 	
