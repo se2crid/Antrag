@@ -16,6 +16,8 @@ extension ATAppsViewController: InstallationProxyAppsDelegate {
 	}
 	
 	func filterAndReload() {
+		let generator = UIImpactFeedbackGenerator(style: .light)
+		
 		sortedApps = apps
 			.filter {
 				switch appType {
@@ -32,11 +34,12 @@ extension ATAppsViewController: InstallationProxyAppsDelegate {
 		
 		allSortedApps = sortedApps
 		
+		generator.impactOccurred()
+		
 		if #available(iOS 17.0, *) {
 			setNeedsUpdateContentUnavailableConfiguration()
 		}
 		
 		tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
 	}
-
 }
