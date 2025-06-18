@@ -38,7 +38,7 @@ Due to how it works right now we need both a VPN and a lockdownd pairing file, t
 
 2. Compile
     ```sh
-    cd Protokolle
+    cd Antrag
     gmake
     ```
 
