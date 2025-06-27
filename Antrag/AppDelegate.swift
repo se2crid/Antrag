@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import UICustomSwipeActions
 import IDeviceSwift
 
 @main
@@ -17,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ application: UIApplication,
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
-		UICustomSwipeActionsConfiguration.configure()
 		_createSourcesDirectory()
 		return true
 	}

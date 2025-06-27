@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		334A2D032DE82207009675F0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 334A2D022DE82207009675F0 /* MobileCoreServices.framework */; };
-		335349FC2DF56AD200AEC291 /* UICustomSwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = 335349FB2DF56AD200AEC291 /* UICustomSwipeActions */; };
 		33534A012DF5741C00AEC291 /* IDeviceSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 33534A002DF5741C00AEC291 /* IDeviceSwift */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				335349FC2DF56AD200AEC291 /* UICustomSwipeActions in Frameworks */,
 				334A2D032DE82207009675F0 /* MobileCoreServices.framework in Frameworks */,
 				33534A012DF5741C00AEC291 /* IDeviceSwift in Frameworks */,
 			);
@@ -99,7 +97,6 @@
 			);
 			name = Antrag;
 			packageProductDependencies = (
-				335349FB2DF56AD200AEC291 /* UICustomSwipeActions */,
 				33534A002DF5741C00AEC291 /* IDeviceSwift */,
 			);
 			productName = caipirinha;
@@ -131,7 +128,6 @@
 			mainGroup = 339216C92DE42D7B00302927;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */,
 				335349FF2DF5741B00AEC291 /* XCLocalSwiftPackageReference "IDeviceKit" */,
 				33534DAF2DF58C4700AEC291 /* XCRemoteSwiftPackageReference "LicensePlist" */,
 			);
@@ -646,14 +642,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/khcrysalis/UICustomSwipeActions-patch";
-			requirement = {
-				branch = "fix-placement";
-				kind = branch;
-			};
-		};
 		33534DAF2DF58C4700AEC291 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mono0926/LicensePlist";
@@ -665,11 +653,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		335349FB2DF56AD200AEC291 /* UICustomSwipeActions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 335349FA2DF56AD200AEC291 /* XCRemoteSwiftPackageReference "UICustomSwipeActions-patch" */;
-			productName = UICustomSwipeActions;
-		};
 		33534A002DF5741C00AEC291 /* IDeviceSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = IDeviceSwift;

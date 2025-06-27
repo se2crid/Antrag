@@ -178,7 +178,7 @@ extension ATAppsViewController {
 		present(detailNavigationController, animated: true)
 	}
 	
-	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UICustomSwipeActionsConfiguration? {
+	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let app = sortedApps[indexPath.row]
 		var actions: [UIContextualAction] = []
 		
@@ -218,10 +218,7 @@ extension ATAppsViewController {
 			actions.append(openAction)
 		}
 		
-		let configuration = UICustomSwipeActionsConfiguration(actions: actions)
-		configuration.preferredButtonWidth = 64
-		configuration.preferredButtonSpacing = 14
-		configuration.preferredButtonStyle = .circular
+		let configuration = UISwipeActionsConfiguration(actions: actions)
 		configuration.performsFirstActionWithFullSwipe = false
 		
 		return configuration

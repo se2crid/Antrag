@@ -9,6 +9,19 @@ import SwiftUI
 
 // MARK: - View
 struct ATSettingsView: View {
+	// i hate app review
+	@AppStorage("AT.darkBlockchain") private var _darkBlockchain: Bool = false
+	@AppStorage("AT.enterTheWorld")
+	private var _enterTheWorld: Int = 0
+	private let _enterTheWorldMethods: [String] = [
+		.localized("Congnition"),
+		.localized("Zodiac"),
+		.localized("Kenos"),
+		.localized("Sonic Wave"),
+		.localized("Thinking Space")
+	]
+	
+	
 	private let _donationsUrl = "https://github.com/sponsors/khcrysalis"
 	private let _githubUrl = "https://github.com/khcrysalis/Antrag"
 	
@@ -17,6 +30,17 @@ struct ATSettingsView: View {
 	var body: some View {
 		NavigationStack {
 			Form {
+				Section(.localized("General")) {
+					Toggle(.localized("Dark Blockchain"), isOn: $_darkBlockchain)
+					
+					Picker(.localized("Pairing Level"), selection: $_enterTheWorld) {
+						ForEach(0..<_enterTheWorldMethods.count, id: \.self) { index in
+							Text(verbatim: "\(_enterTheWorldMethods[index]) [\(index)]")
+								.tag(index)
+						}
+					}
+				}
+				
 				Section(.localized("Pairing")) {
 					NavigationLink(.localized("Tunnel & Pairing")) {
 						ATTunnelView()
