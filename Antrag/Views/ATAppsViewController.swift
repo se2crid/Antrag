@@ -7,7 +7,6 @@
 
 import UIKit
 import class SwiftUI.UIHostingController
-import UICustomSwipeActions
 import IDeviceSwift
 
 // MARK: Class extension: Enum
