@@ -16,7 +16,7 @@ class ATAppInfoHeaderView: UIView {
 	let nameLabel: UILabel = {
 		let label = UILabel()
 		label.font = .systemFont(ofSize: 20, weight: .semibold)
-		label.numberOfLines = 0
+		label.numberOfLines = 1
 		return label
 	}()
 	
@@ -24,7 +24,7 @@ class ATAppInfoHeaderView: UIView {
 		let label = UILabel()
 		label.font = .systemFont(ofSize: 13,  weight: .regular)
 		label.textColor = .secondaryLabel
-		label.numberOfLines = 0
+		label.numberOfLines = 1
 		return label
 	}()
 	

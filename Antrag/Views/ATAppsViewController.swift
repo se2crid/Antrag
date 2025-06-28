@@ -72,7 +72,6 @@ class ATAppsViewController: UITableViewController {
 	}
 	
 	func setupTableView() {
-		tableView.backgroundColor = .secondarySystemBackground
 		tableView.separatorStyle = .none
 		tableView.register(
 			ATAppsTableViewCell.self,

@@ -136,4 +136,11 @@ class ATAppsTableViewCell: UITableViewCell {
 			}
 		}
 	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		iconImageView.image = nil
+		nameLabel.text = nil
+		descriptionLabel.text = nil
+	}
 }
