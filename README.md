@@ -12,7 +12,9 @@ An app to list iOS/iPadOS app's, for stock devices. This app uses [idevice](http
 
 ## Download
 
-Visit [releases](https://github.com/khcrysalis/Antrag/releases) and get the latest `.ipa`.
+<a href="https://apps.apple.com/us/app/antrag/id6747074491" target="_blank" rel="noopener noreferrer">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" style="width: 200px; height: auto;">
+</a>
 
 ## How does it work?
 
