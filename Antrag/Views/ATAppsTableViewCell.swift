@@ -27,7 +27,7 @@ class ATAppsTableViewCell: UITableViewCell {
 	let nameLabel: UILabel = {
 		let label = UILabel()
 		label.font = .systemFont(ofSize: 14, weight: .semibold)
-		label.numberOfLines = 0
+		label.numberOfLines = 1
 		return label
 	}()
 	
@@ -35,7 +35,7 @@ class ATAppsTableViewCell: UITableViewCell {
 		let label = UILabel()
 		label.font = .systemFont(ofSize: 12, weight: .regular)
 		label.textColor = .secondaryLabel
-		label.numberOfLines = 0
+		label.numberOfLines = 1
 		return label
 	}()
 	
