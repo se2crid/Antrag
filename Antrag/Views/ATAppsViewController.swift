@@ -39,6 +39,8 @@ class ATAppsViewController: UITableViewController {
 	}
 	
 	private var _didLoad = false
+	var selectBarButton: UIBarButtonItem!
+	var deleteBarButton: UIBarButtonItem!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -46,6 +48,12 @@ class ATAppsViewController: UITableViewController {
 		setupNavigation()
 		setupSearchController()
 		setupListeners()
+		setupToolbar()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		navigationController?.setToolbarHidden(true, animated: false)
 	}
 	
 	// MARK: Setup
@@ -60,7 +68,9 @@ class ATAppsViewController: UITableViewController {
 		navigationItem.leftBarButtonItem = reloadButton
 		
 		let settingsButton = UIBarButtonItem(systemImageName: "gear.circle.fill", target: self, action: #selector(settingsAction))
-		navigationItem.rightBarButtonItem = settingsButton
+		let selectButton = UIBarButtonItem(title: .localized("Select"), style: .plain, target: self, action: #selector(selectAction))
+		selectBarButton = selectButton
+		navigationItem.rightBarButtonItems = [settingsButton, selectButton]
 	}
 	
 	func setupSearchController() {
@@ -77,6 +87,7 @@ class ATAppsViewController: UITableViewController {
 			ATAppsTableViewCell.self,
 			forCellReuseIdentifier: ATAppsTableViewCell.reuseIdentifier
 		)
+		tableView.allowsMultipleSelectionDuringEditing = true
 	}
 	
 	func setupListeners() {
@@ -86,6 +97,13 @@ class ATAppsViewController: UITableViewController {
 			name: .heartbeat,
 			object: nil
 		)
+	}
+	
+	func setupToolbar() {
+		deleteBarButton = UIBarButtonItem(title: .localized("Delete"), style: .plain, target: self, action: #selector(massDeleteAction))
+		deleteBarButton.isEnabled = false
+		let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+		toolbarItems = [flex, deleteBarButton]
 	}
 	
 	// MARK: Actions
@@ -131,6 +149,56 @@ class ATAppsViewController: UITableViewController {
 			}
 		}
 	}
+	
+	@objc func selectAction() {
+		let isEditing = tableView.isEditing
+		tableView.setEditing(!isEditing, animated: true)
+		navigationController?.setToolbarHidden(isEditing, animated: true)
+		deleteBarButton.isEnabled = false
+		deleteBarButton.title = .localized("Delete")
+		updateSelectButtonTitle()
+	}
+	
+	func updateSelectButtonTitle() {
+		let title = tableView.isEditing ? .localized("Done") : .localized("Select")
+		selectBarButton.title = title
+	}
+	
+	func updateDeleteButtonState() {
+		let count = tableView.indexPathsForSelectedRows?.count ?? 0
+		deleteBarButton.isEnabled = count > 0
+		let title: String
+		if count == 0 {
+			title = .localized("Delete")
+		} else {
+			title = .localized("Delete (%d)", arguments: count)
+		}
+		deleteBarButton.title = title
+	}
+	
+	@objc func massDeleteAction() {
+		guard let selected = tableView.indexPathsForSelectedRows else { return }
+		let ids = selected.compactMap { sortedApps[$0.row].CFBundleIdentifier }
+		guard ids.count > 0 else { return }
+
+		let alert = UIAlertController(title: nil, message: .localized("Are you sure you want to delete %d apps?", arguments: ids.count), preferredStyle: .alert)
+		alert.addAction(UIAlertAction(title: .localized("Cancel"), style: .cancel))
+		alert.addAction(UIAlertAction(title: .localized("Delete"), style: .destructive) { _ in
+			Task {
+				for id in ids {
+					try? await InstallationAppProxy.deleteApp(for: id)
+				}
+				await MainActor.run {
+					// remove from data sources
+					self.apps.removeAll { ids.contains($0.CFBundleIdentifier ?? "") }
+					self.sortedApps.removeAll { ids.contains($0.CFBundleIdentifier ?? "") }
+					self.tableView.deleteRows(at: selected, with: .automatic)
+					self.selectAction() // exit selection mode
+				}
+			}
+		})
+		present(alert, animated: true)
+	}
 }
 
 // MARK: - Class extension: TableView
@@ -161,6 +229,11 @@ extension ATAppsViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if tableView.isEditing {
+			updateDeleteButtonState()
+			return
+		}
+		
 		let app = sortedApps[indexPath.row]
 		
 		tableView.deselectRow(at: indexPath, animated: true)
@@ -174,6 +247,16 @@ extension ATAppsViewController {
 		}
 		
 		present(detailNavigationController, animated: true)
+	}
+	
+	override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+		if tableView.isEditing {
+			updateDeleteButtonState()
+		}
+	}
+	
+	override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+		return .none
 	}
 	
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
