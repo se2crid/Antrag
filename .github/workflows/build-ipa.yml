@@ -1,0 +1,47 @@
+name: Build Unsigned IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-ipa:
+    runs-on: macos-15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - name: Select Xcode version
+        run: |
+          sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+          xcodebuild -version
+
+      - name: Set build version
+        run: |
+          agvtool new-version -all $(git rev-parse HEAD)
+
+      - name: Build unsigned IPA
+        run: |
+          make clean
+          make
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-ipa-${{ github.sha }}
+          path: packages/*.ipa
+          retention-days: 30
+
+      - name: Show IPA info
+        run: |
+          echo "✅ Unsigned IPA built successfully!"
+          ls -la packages/
+          echo "📱 App bundle identifier: thewonderofyou.antrag2"
+          echo "🎯 Deployment target: iOS 18.0+"
+          echo "🏗️ Architecture: arm64"
