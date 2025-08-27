@@ -19,8 +19,6 @@ $(SCHEMES):
 	    -workspace Antrag.xcworkspace \
 	    -scheme "$@" \
 	    -configuration Release \
-	    -arch arm64 \
-	    -sdk $(PLATFORM) \
 	    -destination "generic/platform=iOS" \
 	    -derivedDataPath $(TMP) \
 	    -skipPackagePluginValidation \
