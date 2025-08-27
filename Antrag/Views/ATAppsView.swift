@@ -324,16 +324,10 @@ class ATAppsViewModel: ObservableObject {
 }
 
 // MARK: - ViewModel Extension
-extension ATAppsViewModel: InstallationAppProxyDelegate {
-    func installationAppProxy(_ proxy: InstallationAppProxy, didReceiveApps apps: [AppInfo]) {
+extension ATAppsViewModel: InstallationProxyAppsDelegate {
+    public func updateApplications(with apps: [AppInfo]) {
         self.apps = apps
         filterApps()
         isLoading = false
-    }
-    
-    func installationAppProxy(_ proxy: InstallationAppProxy, didFailWithError error: Error) {
-        isLoading = false
-        print("Installation proxy error: \(error)")
-        // TODO: Show error alert
     }
 }
