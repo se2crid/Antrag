@@ -80,6 +80,7 @@ struct ATAppsView: View {
                     } description: {
                         Text("Please make sure you are connected to the VPN and have a pairing file.")
                     }
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
                 } else {
                     List {
                         ForEach(filteredApps, id: \.CFBundleIdentifier) { app in
@@ -116,6 +117,7 @@ struct ATAppsView: View {
                     .refreshable {
                         await appsManager.reloadApps()
                     }
+                    .background(.ultraThinMaterial.opacity(0.3))
                 }
             }
             .navigationTitle("Apps")
@@ -154,6 +156,7 @@ struct ATAppsView: View {
                 }
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
+                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
             }
             .sheet(item: $selectedApp) { app in
                 NavigationStack {
@@ -168,8 +171,10 @@ struct ATAppsView: View {
                 }
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
+                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: filteredApps.count)
         .task {
             await appsManager.loadAppsInitially()
         }

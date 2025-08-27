@@ -59,7 +59,8 @@ struct ATAppRowView: View {
         .padding(.vertical, padding * 0.93)
         .background(
             RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(Color(.quaternarySystemFill))
+                .fill(.ultraThinMaterial)
+                .shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: 0.5)
         )
         .contentShape(Rectangle())
         .task {
