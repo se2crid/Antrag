@@ -1,6 +1,6 @@
 //
-//  SYSettingsView.swift
-//  syslog
+//  ATSettingsView.swift
+//  Antrag
 //
 //  Created by samara on 17.05.2025.
 //
@@ -9,19 +9,13 @@ import SwiftUI
 
 // MARK: - View
 struct ATSettingsView: View {
-	// i hate app review
-	@AppStorage("AT.darkBlockchain") private var _darkBlockchain: Bool = false
-	@AppStorage("AT.enterTheWorld")
-	private var _enterTheWorld: Int = 0
-	private let _enterTheWorldMethods: [String] = [
-		.localized("Congnition"),
-		.localized("Zodiac"),
-		.localized("Kenos"),
-		.localized("Sonic Wave"),
-		.localized("Thinking Space")
-	]
+	@AppStorage("AT.autoRefresh") private var autoRefresh: Bool = true
+	@AppStorage("AT.refreshInterval") private var refreshInterval: Int = 30
+	@AppStorage("AT.showSystemApps") private var showSystemAppsDefault: Bool = false
+	@AppStorage("AT.confirmDelete") private var confirmDelete: Bool = true
+	@AppStorage("AT.gridView") private var useGridView: Bool = false
 	
-	
+	private let refreshIntervals = [15, 30, 60, 120, 300] // seconds
 	private let _donationsUrl = "https://github.com/sponsors/khcrysalis"
 	private let _githubUrl = "https://github.com/khcrysalis/Antrag"
 	
@@ -30,27 +24,36 @@ struct ATSettingsView: View {
 	var body: some View {
 		NavigationStack {
 			Form {
-				Section(.localized("General")) {
-					Toggle(.localized("Dark Blockchain"), isOn: $_darkBlockchain)
+				Section("App Behavior") {
+					Toggle("Auto Refresh", isOn: $autoRefresh)
 					
-					Picker(.localized("Pairing Level"), selection: $_enterTheWorld) {
-						ForEach(0..<_enterTheWorldMethods.count, id: \.self) { index in
-							Text(verbatim: "\(_enterTheWorldMethods[index]) [\(index)]")
-								.tag(index)
+					if autoRefresh {
+						Picker("Refresh Interval", selection: $refreshInterval) {
+							ForEach(refreshIntervals, id: \.self) { interval in
+								Text("\(interval) seconds")
+									.tag(interval)
+							}
 						}
 					}
+					
+					Toggle("Show System Apps by Default", isOn: $showSystemAppsDefault)
+					Toggle("Confirm Before Deleting", isOn: $confirmDelete)
 				}
 				
-				Section(.localized("Pairing")) {
-					NavigationLink(.localized("Tunnel & Pairing")) {
+				Section("Display") {
+					Toggle("Use Grid View", isOn: $useGridView)
+				}
+				
+				Section("Connection") {
+					NavigationLink("Tunnel & Pairing") {
 						ATTunnelView()
 					}
 				}
 				
-				_feedback()
+				_about()
 				_help()
 			}
-			.navigationTitle(.localized("Settings"))
+			.navigationTitle("Settings")
 			.navigationBarTitleDisplayMode(.large)
 		}
 	}
@@ -59,21 +62,21 @@ struct ATSettingsView: View {
 // MARK: - View extension
 extension ATSettingsView {
 	@ViewBuilder
-	private func _feedback() -> some View {
-		Section {
+	private func _about() -> some View {
+		Section("About") {
 			NavigationLink(destination: SYAboutView()) {
 				Label {
-					Text(verbatim: .localized("About %@", arguments: Bundle.main.name))
+					Text("About \(Bundle.main.name)")
 				} icon: {
 					Image(uiImage: UIImage(named: Bundle.main.iconFileName ?? "")!)
 						.appIconStyle(size: 23)
 				}
 			}
-			Button(.localized("GitHub Repository"), systemImage: "safari") {
+			Button("GitHub Repository", systemImage: "safari") {
 				UIApplication.open(_githubUrl)
 			}
 			#if !DISTRIBUTION
-			Button(.localized("Support My Work"), systemImage: "heart") {
+			Button("Support My Work", systemImage: "heart") {
 				UIApplication.open(_donationsUrl)
 			}
 			#endif
@@ -82,11 +85,11 @@ extension ATSettingsView {
 	
 	@ViewBuilder
 	private func _help() -> some View {
-		Section(.localized("Help")) {
-			Button(.localized("Pairing File Guide"), systemImage: "questionmark.circle") {
+		Section("Help") {
+			Button("Pairing File Guide", systemImage: "questionmark.circle") {
 				UIApplication.open("https://github.com/StephenDev0/StikDebug-Guide/blob/main/pairing_file.md")
 			}
-			Button(.localized("Download StosVPN"), systemImage: "arrow.down.app") {
+			Button("Download StosVPN", systemImage: "arrow.down.app") {
 				UIApplication.open("https://apps.apple.com/us/app/stosvpn/id6744003051")
 			}
 		}

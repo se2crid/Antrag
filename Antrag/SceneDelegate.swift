@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  syslog
+//  Antrag
 //
 //  Created by samara on 14.05.2025.
 //
@@ -21,9 +21,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let windowScene = scene as? UIWindowScene else { return }
 		
 		let window = UIWindow(windowScene: windowScene)
-		let controller = UINavigationController(rootViewController: ATAppsViewController())
-
-		window.rootViewController = controller
+		
+		// Use SwiftUI for the main interface
+		let contentView = ATAppsView()
+		let hostingController = UIHostingController(rootView: contentView)
+		
+		window.rootViewController = hostingController
 		window.makeKeyAndVisible()
 		self.window = window
 	}

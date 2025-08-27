@@ -1,27 +1,101 @@
+name: Build Unsigned IPA
+
 on:
-  - push
+  push:
+    branches: [ main, ui-update ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
 jobs:
-  nightly:
+  build:
     runs-on: macos-15
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: recursive
+          fetch-depth: 0
 
-      - name: Use Xcode 16.2
+      - name: Setup Xcode
         run: |
           sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+          xcodebuild -version
 
-      - name: Build
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ hashFiles('**/*.xcodeproj', '**/*.xcworkspace') }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
+      - name: Update Build Number
         run: |
-          agvtool new-version -all $(git rev-parse HEAD)
-          make
-          mkdir upload
-          mv packages/* upload/
+          BUILD_NUMBER=$(git rev-list --count HEAD)
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          agvtool new-version -all "${BUILD_NUMBER}"
+          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "COMMIT_HASH=${COMMIT_HASH}" >> $GITHUB_ENV
 
-      - name: Upload
+      - name: Build Unsigned IPA
+        run: |
+          set -e
+          make clean
+          make
+          
+          # Verify IPA was created
+          if [ ! -f "packages/Antrag.ipa" ]; then
+            echo "❌ IPA file not found!"
+            exit 1
+          fi
+          
+          # Get IPA size for artifact name
+          IPA_SIZE=$(du -h packages/Antrag.ipa | cut -f1)
+          echo "IPA_SIZE=${IPA_SIZE}" >> $GITHUB_ENV
+          
+          # Create upload directory with metadata
+          mkdir -p upload
+          mv packages/* upload/
+          
+          # Create build info
+          cat > upload/build-info.txt << EOF
+          Build: ${BUILD_NUMBER}
+          Commit: ${COMMIT_HASH}
+          Branch: ${GITHUB_REF_NAME}
+          Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          Size: ${IPA_SIZE}
+          EOF
+
+      - name: Upload Unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Antrag
+          name: Antrag-${{ env.BUILD_NUMBER }}-${{ env.COMMIT_HASH }}
           path: upload/*
+          retention-days: 30
+
+      - name: Create Release (on main branch)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: build-${{ env.BUILD_NUMBER }}
+          name: Antrag Build ${{ env.BUILD_NUMBER }}
+          body: |
+            ## Antrag Build ${{ env.BUILD_NUMBER }}
+            
+            **Commit:** ${{ env.COMMIT_HASH }}  
+            **Date:** ${{ github.event.head_commit.timestamp }}  
+            **Size:** ${{ env.IPA_SIZE }}
+            
+            ### Changes
+            ${{ github.event.head_commit.message }}
+            
+            ### Installation
+            Download the IPA file and install using your preferred sideloading method.
+            
+            > ⚠️ This is an unsigned build for development/testing purposes only.
+          files: upload/Antrag.ipa
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
