@@ -33,9 +33,12 @@ struct ATAppsView: View {
     // Computed properties for filtered and sorted apps
     private var filteredApps: [AppInfo] {
         let typeFiltered = appsManager.apps.filter { app in
-            switch appType {
-            case .system: return app.ApplicationType == "System"
-            case .user: return app.ApplicationType == "User"
+            // Safety check: ensure ApplicationType is not nil
+            guard let appType = app.ApplicationType else { return false }
+            
+            switch self.appType {
+            case .system: return appType == "System"
+            case .user: return appType == "User"
             }
         }
         
@@ -46,10 +49,11 @@ struct ATAppsView: View {
                 return name1.localizedCaseInsensitiveCompare(name2) == .orderedAscending
             }
         } else {
+            let lowercasedSearch = searchText.lowercased()
             return typeFiltered.filter { app in
-                app.CFBundleDisplayName?.lowercased().contains(searchText.lowercased()) == true ||
-                app.CFBundleExecutable?.lowercased().contains(searchText.lowercased()) == true ||
-                app.CFBundleIdentifier?.lowercased().contains(searchText.lowercased()) == true
+                (app.CFBundleDisplayName?.lowercased().contains(lowercasedSearch) == true) ||
+                (app.CFBundleExecutable?.lowercased().contains(lowercasedSearch) == true) ||
+                (app.CFBundleIdentifier?.lowercased().contains(lowercasedSearch) == true)
             }.sorted { app1, app2 in
                 let name1 = app1.CFBundleDisplayName ?? app1.CFBundleExecutable ?? ""
                 let name2 = app2.CFBundleDisplayName ?? app2.CFBundleExecutable ?? ""
@@ -276,7 +280,7 @@ extension AppsManager: InstallationProxyAppsDelegate {
 // MARK: - AppInfo Identifiable Extension
 extension AppInfo: Identifiable {
     public var id: String {
-        CFBundleIdentifier ?? UUID().uuidString
+        CFBundleIdentifier ?? CFBundleDisplayName ?? CFBundleExecutable ?? UUID().uuidString
     }
 }
 

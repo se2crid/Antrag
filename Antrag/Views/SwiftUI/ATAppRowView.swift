@@ -69,7 +69,7 @@ struct ATAppRowView: View {
     }
     
     private func loadAppIcon() async {
-        guard let identifier = app.CFBundleIdentifier else { return }
+        guard let identifier = app.CFBundleIdentifier, !identifier.isEmpty else { return }
         
         do {
             let image = try await InstallationAppProxy.getAppIconCached(for: identifier)
@@ -77,7 +77,11 @@ struct ATAppRowView: View {
                 self.iconImage = image
             }
         } catch {
-            // Icon loading failed, placeholder will be shown
+            // Icon loading failed - this is expected for some apps
+            // The placeholder will continue to be shown
+            await MainActor.run {
+                self.iconImage = nil
+            }
         }
     }
 }
