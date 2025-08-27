@@ -1,101 +1,62 @@
-name: Build Unsigned IPA
+name: Build Unsigned Debug IPA
 
 on:
   push:
-    branches: [ main, ui-update ]
+    branches: [ "main", "ui-update" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: macos-15
+    name: Build Debug IPA
+    runs-on: macos-14
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 0
 
       - name: Setup Xcode
-        run: |
-          sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-          xcodebuild -version
-
-      - name: Cache DerivedData
-        uses: actions/cache@v4
+        uses: maxim-lobanov/setup-xcode@v1
         with:
-          path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-deriveddata-${{ hashFiles('**/*.xcodeproj', '**/*.xcworkspace') }}
-          restore-keys: |
-            ${{ runner.os }}-deriveddata-
+          xcode-version: 'latest'
 
-      - name: Update Build Number
+      - name: Fix Project Format
         run: |
-          BUILD_NUMBER=$(git rev-list --count HEAD)
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          agvtool new-version -all "${BUILD_NUMBER}"
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "COMMIT_HASH=${COMMIT_HASH}" >> $GITHUB_ENV
-
-      - name: Build Unsigned IPA
+          sed -i '' 's/objectVersion = 77/objectVersion = 56/' Antrag.xcodeproj/project.pbxproj
+          sed -i '' 's/preferredProjectObjectVersion = 77/preferredProjectObjectVersion = 56/' Antrag.xcodeproj/project.pbxproj
+          
+      - name: Archive Build (Debug, Unsigned)
         run: |
-          set -e
-          make clean
-          make
+          xcodebuild clean archive \
+            -workspace Antrag.xcworkspace \
+            -scheme "Antrag" \
+            -configuration Debug \
+            -archivePath build/Antrag.xcarchive \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            SWIFT_OPTIMIZATION_LEVEL="-Onone" \
+            IPHONEOS_DEPLOYMENT_TARGET=16.0
+            
+      - name: Create IPA from Archive
+        run: |
+          # Copy the .app from the archive
+          cp -R build/Antrag.xcarchive/Products/Applications/Antrag.app .
+          # Package the app into an IPA
+          mkdir -p Payload
+          cp -R Antrag.app Payload/
+          zip -r Antrag.ipa Payload
+          rm -rf Payload Antrag.app
           
-          # Verify IPA was created
-          if [ ! -f "packages/Antrag.ipa" ]; then
-            echo "❌ IPA file not found!"
-            exit 1
-          fi
-          
-          # Get IPA size for artifact name
-          IPA_SIZE=$(du -h packages/Antrag.ipa | cut -f1)
-          echo "IPA_SIZE=${IPA_SIZE}" >> $GITHUB_ENV
-          
-          # Create upload directory with metadata
-          mkdir -p upload
-          mv packages/* upload/
-          
-          # Create build info
-          cat > upload/build-info.txt << EOF
-          Build: ${BUILD_NUMBER}
-          Commit: ${COMMIT_HASH}
-          Branch: ${GITHUB_REF_NAME}
-          Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          Size: ${IPA_SIZE}
-          EOF
-
-      - name: Upload Unsigned IPA
+      - name: Upload Debug IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Antrag-${{ env.BUILD_NUMBER }}-${{ env.COMMIT_HASH }}
-          path: upload/*
-          retention-days: 30
-
-      - name: Create Release (on main branch)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: build-${{ env.BUILD_NUMBER }}
-          name: Antrag Build ${{ env.BUILD_NUMBER }}
-          body: |
-            ## Antrag Build ${{ env.BUILD_NUMBER }}
-            
-            **Commit:** ${{ env.COMMIT_HASH }}  
-            **Date:** ${{ github.event.head_commit.timestamp }}  
-            **Size:** ${{ env.IPA_SIZE }}
-            
-            ### Changes
-            ${{ github.event.head_commit.message }}
-            
-            ### Installation
-            Download the IPA file and install using your preferred sideloading method.
-            
-            > ⚠️ This is an unsigned build for development/testing purposes only.
-          files: upload/Antrag.ipa
-          draft: false
-          prerelease: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: Antrag-Debug.ipa
+          path: Antrag.ipa
+          retention-days: 90
