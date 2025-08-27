@@ -44,4 +44,4 @@ jobs:
           ls -la packages/
           echo "📱 App bundle identifier: thewonderofyou.antrag2"
           echo "🎯 Deployment target: iOS 18.0+"
-          echo "🏗️ Architecture: arm64"
+          echo "🏗️ Platform: iOS Device"
